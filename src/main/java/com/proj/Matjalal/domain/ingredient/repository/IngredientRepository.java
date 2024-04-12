@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
-    List<Ingredient> findByType(String type);
+    List<Ingredient> findByTypeContaining(String type);
 }

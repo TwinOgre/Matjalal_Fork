@@ -91,6 +91,6 @@ public class IngredientService {
     }
 
     public List<Ingredient> getListByType(String type) {
-        return this.ingredientRepository.findByType(type);
+        return this.ingredientRepository.findByTypeContaining(type);
     }
 }

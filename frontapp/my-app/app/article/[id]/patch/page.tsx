@@ -1,4 +1,5 @@
 'use client'
+import api from "@/app/utils/api";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -21,22 +22,19 @@ function ArticleModifyForm() {
     const handleSubmit = async (e: any) => {
       e.preventDefault();
       
-      const response = await fetch(fetchParam , {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(article)
-      });
-  
-      if (response.ok) {
-        alert('게시물이 성공적으로 수정되었습니다.');
-        router.push('/article');
-      } else {
-        alert('게시물 수정에 실패했습니다.');
-      }
-  
+      try {
+        await api.patch(fetchParam , {
+            title: article.title,
+            content: article.content
+        });
+        console.log("Article updated successfully!");
+        // 추가적인 로직이 필요한 경우 여기에 작성
+    } catch (error) {
+        console.error("An error occurred while updating the article:", error);
+        // 에러 처리 로직을 추가할 수 있습니다. 예를 들어, 사용자에게 오류 메시지를 표시하거나 다시 시도할 수 있도록 유도할 수 있습니다.
     }
+    }
+
     const handleChange = (e: any) => {
       const { name, value } = e.target;
       // const name: any = e.target.name;

@@ -1,4 +1,5 @@
 'use client'
+import api from "@/app/utils/api";
 import { useState } from "react";
 
 export default function Login() {
@@ -7,19 +8,10 @@ export default function Login() {
     
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:8090/api/v1/members/login" , {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(member)
+        const response = await api.post("/members/login" , {
+            username: member.username,
+            password: member.password
           });
-          if (response.ok) {
-            alert('로그인 성공');
-          } else {
-            alert('로그인 실패');
-          }
     }
     const handleChange = (e: any) => {
         const { name, value } = e.target;

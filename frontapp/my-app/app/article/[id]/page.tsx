@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect } from 'react'
 import Link from "next/link";
+import api from "@/app/utils/api";
 
 type articleInterface = {
   id: number,
@@ -14,14 +15,22 @@ export default function Article() {
   const [article, setArticle] = useState<articleInterface>();
   const params = useParams();
 
-  useEffect(() => {
-    fetch(`http://localhost:8090/api/v1/articles/${params.id}`,{
-        method: 'GET',
-        credentials: 'include', // 핵심 변경점
+  const fetchArticle = () => {
+    api.get(`/articles/${params.id}`)
+    .then(
+      response => setArticle(response.data.data.article)
+    ) 
+    .catch (err => {
+      console.log(err)
     })
-    .then(result => result.json())
-    .then(result => setArticle(result.data.article))
-}, [])
+  };
+
+
+  useEffect(() => {
+    fetchArticle();
+  }, []);
+
+
 
   return (
     <div>

@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from "next/link";
+import axios from 'axios';
+import api from '../utils/api';
 interface articlesInterface {
   id: number,
   createdDate: string,
@@ -12,11 +14,14 @@ interface articlesInterface {
 export default function Article() {
   const [articles, setArticles] = useState<articlesInterface[]>([]);
 
-  const fetchArticles = async () => {
-    const response = await fetch("http://localhost:8090/api/v1/articles");
-    const json = await response.json();
-    console.log(json);
-    setArticles(json.data.articles);
+  const fetchArticles = () => {
+    api.get("/articles")
+    .then(
+      response => setArticles(response.data.data.articles)
+    ) 
+    .catch (err => {
+      console.log(err)
+    })
   };
 
 
@@ -25,18 +30,8 @@ export default function Article() {
   }, []);
 
   const handleDelete = async ( articleId: number) => {
-    const fetchParam: string = "http://localhost:8090/api/v1/articles/" + articleId;
-    const response = await fetch(fetchParam, {
-      method: 'DELETE'
-    });
-
-    if (response.ok) {
-      alert('게시물이 성공적으로 삭제되었습니다.');
-      fetchArticles();
-    } else {
-      alert('게시물 삭제에 실패했습니다.');
-    }
-
+    const fetchParam: string = "/articles/" + articleId;
+    const response =  await api.delete(fetchParam)
   }
   return (
     <>

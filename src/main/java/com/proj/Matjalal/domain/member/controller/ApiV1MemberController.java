@@ -38,6 +38,7 @@ public class ApiV1MemberController {
     public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody){
         RsData<MemberService.AuthAndMakeTokensResponseBody> rsData =  this.memberService.authAndMakeToken(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
+        // 쿠키에 accessToken, refreshToken 넣기
         rq.setCrossDomainCookie("accessToken", rsData.getData().getAccessToken());
         rq.setCrossDomainCookie("refreshToken", rsData.getData().getRefreshToken());
         return RsData.of(

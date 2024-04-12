@@ -59,9 +59,9 @@ public class MemberService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id",member.getId());
         claims.put("username",member.getUsername());
-        String refreshToken = member.getRefreshToken();
-        String accessToken = jwtProvider.genToken( member , 60 * 60 * 5 );
 
+        String accessToken = jwtProvider.genAccessToken(member);
+        String refreshToken = jwtProvider.genRefreshToken(member);
         System.out.println("accessToken : " + accessToken);
         return RsData.of(
                 "200-1",
