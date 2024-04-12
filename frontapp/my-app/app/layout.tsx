@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// import "./globals.css";
-import Link from "next/link";
+import "./globals.css";
+import "./home.css";
+import Footer from './components/Footer.tsx';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,12 +23,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-      <Link href="/">홈</Link> <span> | </span>
-      <Link href="/article">게시글</Link> <span> | </span>
-      <Link href="/member/login">로그인</Link> <span> | </span>
-      <Link href="/about">소개</Link>
-      <br/> 
-        {children}</body>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
