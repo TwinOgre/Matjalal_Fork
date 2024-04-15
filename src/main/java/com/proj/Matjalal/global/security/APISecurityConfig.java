@@ -34,6 +34,8 @@ public class APISecurityConfig {
                                 .requestMatchers("/api/*/ingredients").permitAll() //전체 재료 보기는 누구나 가능
                                 .requestMatchers("/api/*/ingredients/*").permitAll() // 재료 상세 보기는 누구나 가능
                                 .requestMatchers("/api/*/ingredients/type/*").permitAll() // 재료 상세 보기는 누구나 가능
+                                .requestMatchers("/api/*/gongchaArticles").permitAll() // 다건요청 권한 허용
+                                .requestMatchers("/api/*/gongchaArticles/*").permitAll() // gongcha 모든 method 권한 허용
                                 .anyRequest().authenticated()
                 )
                 .csrf(
