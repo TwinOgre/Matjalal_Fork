@@ -27,6 +27,8 @@ public class APISecurityConfig {
                         authorizeRequests -> authorizeRequests
                                 .requestMatchers("/api/*/articles").permitAll()
                                 .requestMatchers("/api/*/articles/*").permitAll()
+                                .requestMatchers("/api/*/subwayArticles").permitAll()
+                                .requestMatchers("/api/*/subwayArticles/*").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/*/members/login").permitAll() // 로그인은 누구나 가능, post 요청만 허용
                                 .requestMatchers(HttpMethod.POST, "/api/*/members/logout").permitAll() // 로그아웃은 누구나 가능
                                 .requestMatchers("/api/*/ingredients").permitAll() //전체 재료 보기는 누구나 가능

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import api from '../utils/api';
 
 type memberInterface = {
   id: number,
@@ -12,12 +13,11 @@ export default function About() {
   const [member, setMember] = useState<memberInterface>();
 
   useEffect(() => {
-    fetch(`http://localhost:8090/api/v1/members/me`, {
-      method: 'GET',
-      credentials: 'include', // 핵심 변경점
+    api.get("/members/me")
+    .then(response => setMember(response.data.data.memberDTO))
+    .catch (err => {
+      console.log(err)
     })
-      .then(result => result.json())
-      .then(result => setMember(result.data.memberDTO))
   }, [])
 
   return (

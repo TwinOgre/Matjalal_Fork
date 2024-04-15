@@ -29,7 +29,7 @@ public class ApiV1ArticleController {
     }
 
     @GetMapping("")
-    public RsData<ArticlesResponse> getArticles(){
+    public RsData<ArticlesResponse> getArticles() {
         List<Article> articles = this.articleService.getList();
 
 
@@ -43,7 +43,7 @@ public class ApiV1ArticleController {
     }
 
     @GetMapping("/{id}")
-    public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id){
+    public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id) {
         return this.articleService.getArticle(id).map(article -> RsData.of(
                 "S-1",
                 "성공",
@@ -54,6 +54,7 @@ public class ApiV1ArticleController {
                 null
         ));
     }
+
     @Data
     public static class WriteRequest {
         @NotBlank
@@ -61,24 +62,26 @@ public class ApiV1ArticleController {
         @NotBlank
         private String content;
     }
+
     @AllArgsConstructor
     @Getter
-    public static class WriteResponce {
-        private final  Article article;
+    public static class WriteResponse {
+        private final Article article;
     }
 
 
     @PostMapping("")
-    public RsData<WriteResponce> write(@RequestBody WriteRequest writeRequest){
+    public RsData<WriteResponse> write(@RequestBody WriteRequest writeRequest) {
         RsData<Article> writeRs = this.articleService.create(null, writeRequest.getTitle(), writeRequest.getContent());
-        if(writeRs.isFail()) return (RsData) writeRs;
+        if (writeRs.isFail()) return (RsData) writeRs;
 
         return RsData.of(
                 writeRs.getResultCode(),
                 writeRs.getMsg(),
-                new WriteResponce(writeRs.getData())
-                );
+                new WriteResponse(writeRs.getData())
+        );
     }
+
     @Data
     public static class ModifyRequest {
         @NotBlank
@@ -86,16 +89,17 @@ public class ApiV1ArticleController {
         @NotBlank
         private String content;
     }
+
     @AllArgsConstructor
     @Getter
-    public static class ModifyResponce {
-        private final  Article article;
+    public static class ModifyResponse {
+        private final Article article;
     }
 
     @PatchMapping("/{id}")
-    public RsData<ModifyResponce> modifyArticle(@PathVariable("id") Long id, @Valid @RequestBody ModifyRequest modifyRequest){
+    public RsData<ModifyResponse> modifyArticle(@PathVariable("id") Long id, @Valid @RequestBody ModifyRequest modifyRequest) {
         Optional<Article> optionalArticle = this.articleService.findById(id);
-        if(optionalArticle.isEmpty()){
+        if (optionalArticle.isEmpty()) {
             return RsData.of(
                     "F-4",
                     "%s번 게시물은 존재하지 않습니다.".formatted(id),
@@ -104,24 +108,25 @@ public class ApiV1ArticleController {
         }
         // 회원 권한 체크 canModify();
 
-        RsData<Article> articleRsData =this.articleService.modify(optionalArticle.get(), modifyRequest.getTitle(), modifyRequest.getContent());
+        RsData<Article> articleRsData = this.articleService.modify(optionalArticle.get(), modifyRequest.getTitle(), modifyRequest.getContent());
 
         return RsData.of(
                 articleRsData.getResultCode(),
                 articleRsData.getMsg(),
-                new ModifyResponce(articleRsData.getData())
+                new ModifyResponse(articleRsData.getData())
         );
     }
 
     @AllArgsConstructor
     @Getter
-    public static class DeleteResponce {
-        private final  Article article;
+    public static class DeleteResponse {
+        private final Article article;
     }
+
     @DeleteMapping("/{id}")
-    public RsData<DeleteResponce> deleteArticle(@PathVariable("id") Long id){
+    public RsData<DeleteResponse> deleteArticle(@PathVariable("id") Long id) {
         Optional<Article> optionalArticle = this.articleService.findById(id);
-        if(optionalArticle.isEmpty()){
+        if (optionalArticle.isEmpty()) {
             return RsData.of(
                     "F-5",
                     "%d번 게시글이 없어 삭제 실패했습니다.".formatted(id),
@@ -132,7 +137,7 @@ public class ApiV1ArticleController {
         return RsData.of(
                 deletedRsData.getResultCode(),
                 deletedRsData.getMsg(),
-                new DeleteResponce(deletedRsData.getData())
+                new DeleteResponse(deletedRsData.getData())
         );
     }
 

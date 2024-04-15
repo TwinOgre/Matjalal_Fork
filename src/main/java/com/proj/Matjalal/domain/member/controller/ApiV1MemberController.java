@@ -55,7 +55,7 @@ public class ApiV1MemberController {
     }
 
     @GetMapping("/me")
-    public RsData me(){
+    public RsData<MeResponse> me(){
         Member member = rq.getMember();
 
         return RsData.of(
