@@ -3,6 +3,7 @@ package com.proj.Matjalal.domain.article.controller;
 import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.service.ArticleService;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
+import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.global.RsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -67,6 +68,10 @@ public class ApiV1ArticleController {
         private String content;
         @NotBlank
         private List<Ingredient> ingredients;
+        @NotBlank
+        private Member author;
+        @NotBlank
+        private String brand;
     }
 
     //게시물 생성 완료 응답 DTO
@@ -80,7 +85,7 @@ public class ApiV1ArticleController {
     @PostMapping("")
     public RsData<CreateResponse> createArticle(@RequestBody CreateRequest CreateRequest) {
         RsData<Article> createRs = this.articleService.create(null, CreateRequest.getSubject(),
-                CreateRequest.getContent(), CreateRequest.ingredients);
+                CreateRequest.getContent(), CreateRequest.getIngredients(), CreateRequest.getBrand());
         if (createRs.isFail()) {
             return (RsData) createRs;
         }

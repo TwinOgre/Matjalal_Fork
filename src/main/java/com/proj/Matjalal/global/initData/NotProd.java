@@ -24,11 +24,11 @@ public class NotProd {
             Member admin = memberService.join("admin", password, "admin@test.com");
 
             // 작성자 회원 추가
-            articleService.create(user1, "제목 1", "내용 1",null);
-            articleService.create(user1, "제목 2", "내용 2",null);
-            articleService.create(user2, "제목 3", "내용 3",null);
-            articleService.create(user2, "제목 4", "내용 4",null);
-            articleService.create(admin, "제목 5", "내용 5",null);
+            articleService.create(user1, "제목 1", "내용 1",null, "subway");
+            articleService.create(user1, "제목 2", "내용 2",null, "subway");
+            articleService.create(user2, "제목 3", "내용 3",null, "gongcha");
+            articleService.create(user2, "제목 4", "내용 4",null, "gongcha");
+            articleService.create(admin, "제목 5", "내용 5",null, "gongcha");
 
             //재료 생성
             // Subway
@@ -52,9 +52,9 @@ public class NotProd {
             ingredientService.create("페퍼로니", typeName);
             // [치즈]
             typeName = "cheese";
-            ingredientService.create("양상추", typeName);
-            ingredientService.create("토마토", typeName);
-            ingredientService.create("오이", typeName);
+            ingredientService.create("아메리칸 치즈", typeName);
+            ingredientService.create("슈레드 치즈", typeName);
+            ingredientService.create("모짜렐라 치즈", typeName);
             // [야채]
             typeName = "vegetable";
             ingredientService.create("양상추", typeName);
@@ -196,11 +196,6 @@ public class NotProd {
             ingredientService.create("(HOT)아메리카노", typeName);
             ingredientService.create("(HOT)카페라떼", typeName);
             ingredientService.create("(HOT)바닐라 카페라떼", typeName);
-
-
-
-
-
 
         };
     }
