@@ -1,11 +1,13 @@
 package com.proj.Matjalal.domain.article.service;
 
-
 import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.repository.ArticleRepository;
+import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.global.RsData.RsData;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,85 +16,58 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleService{
+public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public Optional<Article> getArticle(Long id) {
-        return this.articleRepository.findById(id);
-
-    }
-
-    public List<Article> getList() {
+    public List<Article> getAll() {
         return this.articleRepository.findAll();
     }
 
-    @Transactional
-    public RsData<Article> create(Member member, String title, String content) {
-//        if(title ==null || content == null){
-//            return RsData.of(
-//                    "F-3",
-//                    "게시물 등록에 실패했습니다."
-//            );
-//        }
-        Article article;
-        try {
-            if(title ==null || content == null){
-                throw new Exception("가입코드가 틀립니다");
-            }
-            article = Article.builder()
-                    .author(member)
-                    .title(title)
-                    .content(content)
-                    .build();
-            this.articleRepository.save(article);
-        }catch (Exception e){
-            return RsData.of(
-                    "F-3",
-                    "게시물 등록에 실패했습니다."
-            );
-        }
-
-
-
-        return RsData.of(
-                "S-3",
-                "게시물이 등록되었습니다.",
-                article
-        );
+    public Optional<Article> getArticle(Long id) {
+        return this.articleRepository.findById(id);
     }
+
     @Transactional
-    public RsData<Article> modify(Article article, String title, String content) {
-        Article article1 = article.toBuilder()
-                .title(title)
+    public RsData<Article> create(Member author, String subject, String content, List<Ingredient> ingredients) {
+        Article article = Article.builder()
+                .author(author)
+                .subject(subject)
+                .content(content)
+                .ingredients(ingredients)
+                .build();
+        this.articleRepository.save(article);
+
+        return RsData.of("S-3", "등록 성공", article);
+    }
+
+    @Transactional
+    public RsData<Article> update(Article article, String subject, String content) {
+        Article updatedArticle = article.toBuilder()
+                .subject(subject)
                 .content(content)
                 .build();
-        this.articleRepository.save(article1);
-        return RsData.of(
-                "S-4",
-                "%d번 게시글이 수정 되었습니다.".formatted(article.getId()),
-                article1
-        );
+        this.articleRepository.save(updatedArticle);
+        return RsData.of("S-4", "%d 번 게시글이 수정되었습니다.".formatted(updatedArticle.getId()), updatedArticle);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class DeleteArticle {
+        private final Article article;
     }
 
     @Transactional
-    public RsData<Article> deleteByArticle(Article article) {
-        try {
-            this.articleRepository.delete(article);
-        }catch (Exception e){
-            return RsData.of(
-                    "F-5",
-                    "%d번 게시글 삭제가 실패했습니다.".formatted(article.getId()),
-                    null
-            );
+    public RsData<Article> delete(Long id) {
+        Optional<Article> og = getArticle(id);
+        if (og.isEmpty()) {
+            return RsData.of("F-3", "%d 번 게시물은 존재하지 않습니다.".formatted(id), null);
         }
-        return RsData.of(
-                "S-5",
-                "%d번 게시글이 삭제 되었습니다.".formatted(article.getId()),
-                null
-        );
-    }
 
-    public Optional<Article> findById(Long id) {
-        return this.articleRepository.findById(id);
+        try {
+            this.articleRepository.delete(og.get());
+        } catch (Exception e) {
+            return RsData.of("F-4", "%d 번 게시물 삭제 실패".formatted(og.get().getId()), null);
+        }
+        return RsData.of("S-5", "%d 번 게시물이 삭제되었습니다.".formatted(og.get().getId()), null);
     }
 }

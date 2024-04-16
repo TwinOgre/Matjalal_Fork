@@ -1,7 +1,5 @@
 package com.proj.Matjalal.domain.ingredient.controller;
 
-import com.proj.Matjalal.domain.article.controller.ApiV1ArticleController;
-import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.ingredient.service.IngredientService;
 import com.proj.Matjalal.global.RsData.RsData;
