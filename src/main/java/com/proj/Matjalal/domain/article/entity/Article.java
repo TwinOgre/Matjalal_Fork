@@ -25,7 +25,6 @@ public class Article extends BaseEntity {
     private String subject;
     private String content;
     @ManyToOne
-    @JsonIgnore
     private Member author;
     @ManyToMany
     private List<Ingredient> ingredients = new ArrayList<>();

@@ -32,11 +32,24 @@ public class ApiV1ArticleController {
 
     //다건 조회
     @GetMapping("")
-    private RsData<ArticlesResponse> getArticles() {
+    public RsData<ArticlesResponse> getArticles() {
         List<Article> articles = this.articleService.getAll();
 
         return RsData.of("S-1", "성공", new ArticlesResponse(articles));
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class BrandArticlesResponse {
+        private final List<Article> articles;
+    }
+    @GetMapping("/{brand}/brands")
+    public RsData<BrandArticlesResponse> getArticlesByBrand(@PathVariable(value = "brand") String brand){
+        List<Article> articles = this.articleService.getAllByBrand(brand);
+
+        return RsData.of("S-6", "성공", new BrandArticlesResponse(articles));
+    }
+
 
     //단건 조회 DTO
     @Getter
@@ -47,7 +60,7 @@ public class ApiV1ArticleController {
 
     //단건 조회
     @GetMapping("/{id}")
-    private RsData<ArticleResponse> getArticle(@PathVariable(value = "id") Long id) {
+    public RsData<ArticleResponse> getArticle(@PathVariable(value = "id") Long id) {
         return this.articleService.getArticle(id).map(article -> RsData.of(
                 "S-2",
                 "성공",

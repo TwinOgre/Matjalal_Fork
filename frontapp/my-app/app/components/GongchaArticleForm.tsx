@@ -16,7 +16,7 @@ interface ingredientsInterface {
     type: string
 }
 
-export default function SubwayArticleForm() {
+export default function GongchaArticleForm() {
     const router = useRouter();
     const [member, setMember] = useState<memberInterface>();
     const [selectedIngredients, setSelectedIngredients] = useState<ingredientsInterface[]>([]);
@@ -60,14 +60,14 @@ export default function SubwayArticleForm() {
                 content: article.content,
                 author: member,
                 ingredients: selectedIngredients,
-                brand: "subway"
+                brand: "gongcha"
             });
-            console.log("Article created successfully!");
-            router.push("/subway/articles")
+            console.log("Gongcha Article created successfully!");
+            router.push("/gongcha/articles")
 
             // 추가적인 로직이 필요한 경우 여기에 작성
         } catch (error) {
-            console.error("An error occurred while creating the article:", error);
+            console.error("An error occurred while creating the Gongcha article:", error);
             // 에러 처리 로직을 추가할 수 있습니다. 예를 들어, 사용자에게 오류 메시지를 표시하거나 다시 시도할 수 있도록 유도할 수 있습니다.
         }
     }
@@ -86,11 +86,10 @@ export default function SubwayArticleForm() {
                 <div className="flex flex-wrap lg:w-2/3 w-full  flex-col mx-auto px-8 sm:space-x-4  space-y-4 sm:px-0 ">
                     {/* 재료 체크박스 */}
                     <div className="flex space-x-4 pl-4">
-                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="subwayMenu" maxChecked={1} />
-                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="bread" maxChecked={1} />
-                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="cheese" maxChecked={1} />
-                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="vegetable" maxChecked={8} />
-                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="sauce" maxChecked={3} />
+                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="GongChaMenu" maxChecked={1} />
+                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="ice" maxChecked={1} />
+                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="sweet" maxChecked={1} />
+                        <IngredientCheckBox onIngredientChange={onIngredientChange} onIngredientRemove={onIngredientRemove} ingredientType="gongChaTopping" maxChecked={3} />
                     </div>
                     {/* 제목 */}
                     <div className="relative flex-grow w-full">

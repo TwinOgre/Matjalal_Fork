@@ -51,6 +51,12 @@ public class ArticleService {
         return RsData.of("S-4", "%d 번 게시글이 수정되었습니다.".formatted(updatedArticle.getId()), updatedArticle);
     }
 
+    public List<Article> getAllByBrand(String brand) {
+        List<Article> articles =  this.articleRepository.findAllByBrand(brand);
+
+        return articles;
+    }
+
     @Getter
     @AllArgsConstructor
     public static class DeleteArticle {

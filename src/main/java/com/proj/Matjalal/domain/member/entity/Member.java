@@ -26,6 +26,7 @@ public class Member extends BaseEntity {
     private String email;
     private String refreshToken;
 
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("MEMBER"));

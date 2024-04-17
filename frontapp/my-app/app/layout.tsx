@@ -32,7 +32,7 @@ export default function RootLayout({
           <HamburgerMenu />
           <Link href="/member/login"><img className="size-10" src="/lock-icon.svg" alt="Locker Icon Image" /></Link>
         </div>
-        <div className="h-screen">
+        <div className="min-h-screen">
           {children}
         </div>
         <Footer />
