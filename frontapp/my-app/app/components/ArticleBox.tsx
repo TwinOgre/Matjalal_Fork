@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import api from "../utils/api";
+import Link from "next/link";
 interface articlesInterface {
   id: number,
   createdDate: string,
@@ -21,6 +22,7 @@ interface SubwayArticleBoxProps {
 }
  const ArticleBox: React.FC<SubwayArticleBoxProps> =  ({brand}) => {
   const [articles, setArticles] = useState<articlesInterface[]>([]);
+  const dynamicPath = `/${brand}/`;
 
   const fetchArticles = () => {
     api.get(`/articles/${brand}/brands`)
@@ -36,7 +38,7 @@ interface SubwayArticleBoxProps {
   useEffect(() => {
     fetchArticles();
   }, []);
-
+  
   return (
     <>
       {articles.map(article =>
@@ -56,7 +58,7 @@ interface SubwayArticleBoxProps {
               </svg>
             </div>
             <h2 className="text-lg text-gray-900 font-medium title-font mb-2">
-              {article.subject}
+              <Link href={dynamicPath+article.id}>{article.subject}</Link>
             </h2>
             {/* 게시글 등록 시 작성자 추가하면 주석 해제하기 */}
             {/* <p className="leading-relaxed text-base">

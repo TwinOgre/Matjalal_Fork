@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from "next/link";
 import api from "@/app/utils/api";
 
-type articleInterface = {
+type articleType = {
   id: number,
   createdDate: string,
   modifiedDate: string,
@@ -12,17 +12,17 @@ type articleInterface = {
   content: string
 }
 export default function Article() {
-  const [article, setArticle] = useState<articleInterface>();
+  const [article, setArticle] = useState<articleType>();
   const params = useParams();
 
   const fetchArticle = () => {
     api.get(`/articles/${params.id}`)
-    .then(
-      response => setArticle(response.data.data.article)
-    ) 
-    .catch (err => {
-      console.log(err)
-    })
+      .then(
+        response => setArticle(response.data.data.article)
+      )
+      .catch(err => {
+        console.log(err)
+      })
   };
 
 
