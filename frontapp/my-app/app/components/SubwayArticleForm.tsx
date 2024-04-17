@@ -36,10 +36,10 @@ export default function SubwayArticleForm() {
         const isDuplicated = (ingredient: ingredientsInterface) => {
             return selectedIngredients.some(item => item === ingredient);
         };
-    
+
         // 중복된 재료가 없는 새로운 재료 배열
         const newIngredients = checkedIngredients.filter(ingredient => !isDuplicated(ingredient));
-    
+
         // 새로운 재료 배열을 기존 선택된 재료 배열에 추가
         setSelectedIngredients(prevIngredients => [...prevIngredients, ...newIngredients]);
         // Remove previously selected ingredients of the same type
