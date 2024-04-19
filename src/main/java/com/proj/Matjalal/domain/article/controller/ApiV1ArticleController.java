@@ -38,18 +38,28 @@ public class ApiV1ArticleController {
         return RsData.of("S-1", "성공", new ArticlesResponse(articles));
     }
 
+    // 브랜드별 게시물 다건 조회 DTO
     @Getter
     @AllArgsConstructor
     public static class BrandArticlesResponse {
         private final List<Article> articles;
     }
+
+    //브랜드별 게시물 다건 조회
     @GetMapping("/{brand}/brands")
-    public RsData<BrandArticlesResponse> getArticlesByBrand(@PathVariable(value = "brand") String brand){
+    public RsData<BrandArticlesResponse> getArticlesByBrand(@PathVariable(value = "brand") String brand) {
         List<Article> articles = this.articleService.getAllByBrand(brand);
 
         return RsData.of("S-6", "성공", new BrandArticlesResponse(articles));
     }
 
+    //브랜드별 랜덤 게시물 단건 조회
+    @GetMapping("/{brand}/random")
+    public RsData<Long> getRandomArticleByBrand(@PathVariable(value = "brand") String brand) {
+        Long id = this.articleService.findRandomByBrand(brand);
+
+        return RsData.of("S-7", "%s 랜덤 추출 성공".formatted(brand), id);
+    }
 
     //단건 조회 DTO
     @Getter
@@ -150,5 +160,28 @@ public class ApiV1ArticleController {
         RsData<Article> deleteRs = this.articleService.delete(id);
 
         return RsData.of(deleteRs.getResultCode(), deleteRs.getMsg(), new DeleteResponse(deleteRs.getData()));
+    }
+
+    // 게시물 검색 요청 DTO (검색어로)
+
+
+    @Data
+    public static class ArticleSearchRequest {
+        private String brand;
+        private String keyword;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ArticleSearchResponse {
+        private final List<Article> articles;
+    }
+
+    @GetMapping("/search")
+    public RsData<ArticleSearchResponse> searchArticleByKeyword(@RequestParam(value = "brand")String brand,
+                                                                @RequestParam(value = "keyword")String keyword) {
+        List<Article> articleList = this.articleService.searchArticle(brand,keyword);
+
+        return RsData.of("S-6", "성공", new ArticleSearchResponse(articleList));
     }
 }

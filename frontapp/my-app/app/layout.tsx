@@ -5,6 +5,7 @@ import "./home.css";
 import Footer from "./components/Footer";
 import Link from "next/link";
 import HamburgerMenu from "./components/HamburgerMenu";
+import Navbar from "./components/navbar";
 
 const noto_sans = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -28,10 +29,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet"></link>
       </head>
       <body className={noto_sans.className}>
-        <div className="flex justify-between mx-5 my-5">
-          <HamburgerMenu />
-          <Link href="/member/login"><img className="size-10" src="/lock-icon.svg" alt="Locker Icon Image" /></Link>
-        </div>
+        <Navbar />
         <div className="min-h-screen">
           {children}
         </div>

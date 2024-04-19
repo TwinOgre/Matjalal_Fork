@@ -52,7 +52,7 @@ public class ArticleService {
     }
 
     public List<Article> getAllByBrand(String brand) {
-        List<Article> articles =  this.articleRepository.findAllByBrand(brand);
+        List<Article> articles = this.articleRepository.findAllByBrand(brand);
 
         return articles;
     }
@@ -76,5 +76,15 @@ public class ArticleService {
             return RsData.of("F-4", "%d 번 게시물 삭제 실패".formatted(og.get().getId()), null);
         }
         return RsData.of("S-5", "%d 번 게시물이 삭제되었습니다.".formatted(og.get().getId()), null);
+    }
+
+
+
+    public List<Article> searchArticle(String brand, String keyword) {
+        return this.articleRepository.findByBrandAndKeyword(brand,keyword);
+    }
+
+    public Long findRandomByBrand(String brand) {
+        return this.articleRepository.findRandomArticleByBrand(brand);
     }
 }

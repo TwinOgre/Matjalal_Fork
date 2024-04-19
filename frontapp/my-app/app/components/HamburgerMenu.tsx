@@ -7,27 +7,27 @@ export default function HamburgerMenu() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const sidebarRef = useRef(null);
 
-    // 사이드바 토글 함수
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
     useEffect(() => {
         const handleClick = (event) => {
-            // HTML 또는 body를 클릭했을 때 발생하는 이벤트 처리
+            if (sidebarRef.current && sidebarRef.current.contains(event.target)) {
+                return;
+            }
             setSidebarOpen(false);
         };
 
-        // HTML 또는 body에 이벤트 리스너 추가
         document.documentElement.addEventListener('click', handleClick);
         document.body.addEventListener('click', handleClick);
 
-        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
         return () => {
             document.documentElement.removeEventListener('click', handleClick);
             document.body.removeEventListener('click', handleClick);
         };
     }, []);
+
 
     return (
         <div className="flex">
