@@ -1,12 +1,12 @@
 "use client";
 import api from "../utils/api";
-// import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import IngredientCheckBox from "./IngredientCheckBox";
 import { useRouter } from "next/navigation";
 import { MemberInterface } from "../interface/user/MemberInterfaces";
 import { IngredientInterface } from "../interface/ingredient/IngredientInterfaces";
-export default function SubwayArticleForm() {
+
+function SubwayArticleModifyForm() {
   const router = useRouter();
   const [member, setMember] = useState<MemberInterface>();
   const [selectedIngredients, setSelectedIngredients] = useState<
@@ -157,3 +157,5 @@ export default function SubwayArticleForm() {
     </>
   );
 }
+
+export default SubwayArticleModifyForm;
