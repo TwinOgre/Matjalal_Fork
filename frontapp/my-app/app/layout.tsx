@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Link from "next/link";
 import HamburgerMenu from "./components/HamburgerMenu";
 import Navbar from "./components/navbar";
+import ReactQueryProviders from "./utils/ReactQueryProviders";
 
 const noto_sans = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -17,7 +18,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,12 +26,15 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet"></link>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+          rel="stylesheet"
+        ></link>
       </head>
       <body className={noto_sans.className}>
         <Navbar />
         <div className="min-h-screen">
-          {children}
+          <ReactQueryProviders>{children}</ReactQueryProviders>
         </div>
         <Footer />
       </body>

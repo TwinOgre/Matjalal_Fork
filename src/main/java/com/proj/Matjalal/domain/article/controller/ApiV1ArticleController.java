@@ -1,5 +1,6 @@
 package com.proj.Matjalal.domain.article.controller;
 
+import com.proj.Matjalal.domain.article.DTO.ArticleDTO;
 import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.service.ArticleService;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
@@ -13,6 +14,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,30 +29,39 @@ public class ApiV1ArticleController {
     @Getter
     @AllArgsConstructor
     public static class ArticlesResponse {
-        private final List<Article> articles;
+        private final List<ArticleDTO> articleDTOs;
     }
 
     //다건 조회
     @GetMapping("")
     public RsData<ArticlesResponse> getArticles() {
         List<Article> articles = this.articleService.getAll();
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        for (Article article : articles) {
+            articleDTOS.add(new ArticleDTO(article));
+        }
 
-        return RsData.of("S-1", "성공", new ArticlesResponse(articles));
+        return RsData.of("S-1", "성공", new ArticlesResponse(articleDTOS));
     }
 
     // 브랜드별 게시물 다건 조회 DTO
     @Getter
     @AllArgsConstructor
     public static class BrandArticlesResponse {
-        private final List<Article> articles;
+        private final List<ArticleDTO> articles;
     }
+
 
     //브랜드별 게시물 다건 조회
     @GetMapping("/{brand}/brands")
     public RsData<BrandArticlesResponse> getArticlesByBrand(@PathVariable(value = "brand") String brand) {
         List<Article> articles = this.articleService.getAllByBrand(brand);
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        for (Article article : articles) {
+            articleDTOS.add(new ArticleDTO(article));
+        }
 
-        return RsData.of("S-6", "성공", new BrandArticlesResponse(articles));
+        return RsData.of("S-6", "성공", new BrandArticlesResponse(articleDTOS));
     }
 
     //브랜드별 랜덤 게시물 단건 조회
@@ -65,7 +76,7 @@ public class ApiV1ArticleController {
     @Getter
     @AllArgsConstructor
     public static class ArticleResponse {
-        private final Article article;
+        private final ArticleDTO articleDTO;
     }
 
     //단건 조회
@@ -74,7 +85,7 @@ public class ApiV1ArticleController {
         return this.articleService.getArticle(id).map(article -> RsData.of(
                 "S-2",
                 "성공",
-                new ArticleResponse(article)
+                new ArticleResponse(new ArticleDTO(article))
         )).orElseGet(() -> RsData.of(
                 "F-1"
                 , "%d 번 게시물은 존재하지 않습니다.".formatted(id),

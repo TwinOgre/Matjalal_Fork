@@ -1,9 +1,12 @@
 package com.proj.Matjalal.global.initData;
 
+import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.service.ArticleService;
 import com.proj.Matjalal.domain.ingredient.service.IngredientService;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.domain.member.service.MemberService;
+import com.proj.Matjalal.domain.review.service.ReviewService;
+import com.proj.Matjalal.global.RsData.RsData;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Profile({"dev", "test"})
 public class NotProd {
     @Bean
-    CommandLineRunner initData(ArticleService articleService, MemberService memberService, IngredientService ingredientService, PasswordEncoder
+    CommandLineRunner initData(ArticleService articleService, MemberService memberService, IngredientService ingredientService, ReviewService reviewService, PasswordEncoder
             passwordEncoder) {
         String password = passwordEncoder.encode("1234");
         return args -> {
@@ -24,11 +27,11 @@ public class NotProd {
             Member admin = memberService.join("admin", password, "admin@test.com");
 
             // 작성자 회원 추가
-            articleService.create(user1, "맛있는 샌드위치", "샌드위치 맛있어요",null, "subway");
-            articleService.create(user1, "피클만 넣은 샌드위치", "피클 좋아",null, "subway");
-            articleService.create(user2, "버블3배 밀크티", "버블 좋아",null, "gongcha");
-            articleService.create(user2, "치즈폼 타로밀크티", "타로 맜있어",null, "gongcha");
-            articleService.create(admin, "공차슈페너에 버블 추가", "맛있음ㄹㅇ",null, "gongcha");
+            RsData<Article> articleRsData = articleService.create(user1, "맛있는 샌드위치", "샌드위치 맛있어요", null, "subway");
+            articleService.create(user1, "피클만 넣은 샌드위치", "피클 좋아", null, "subway");
+            articleService.create(user2, "버블3배 밀크티", "버블 좋아", null, "gongcha");
+            articleService.create(user2, "치즈폼 타로밀크티", "타로 맜있어", null, "gongcha");
+            articleService.create(admin, "공차슈페너에 버블 추가", "맛있어용b", null, "gongcha");
 
             //재료 생성
             // Subway
@@ -196,6 +199,9 @@ public class NotProd {
             ingredientService.create("(HOT)아메리카노", typeName);
             ingredientService.create("(HOT)카페라떼", typeName);
             ingredientService.create("(HOT)바닐라 카페라떼", typeName);
+
+            //리뷰
+            reviewService.create(user1, articleRsData.getData(), "리뷰1");
 
         };
     }

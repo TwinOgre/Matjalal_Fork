@@ -1,52 +1,34 @@
-'use client'
-import { useEffect, useState } from "react"
+"use client";
+import { useEffect, useState } from "react";
 import api from "../utils/api";
 import Link from "next/link";
 import SearchBox from "./searchBox";
-interface articlesInterface {
-  id: number,
-  createdDate: string,
-  modifiedDate: string,
-  subject: string,
-  content: string,
-  brand: string,
-  author: authorType
-}
-interface authorType {
-  id: number,
-  createdDate: string,
-  modifiedDate: string,
-  username: string,
-}
+import { ArticleInterface } from "../interface/article/ArticleInterfaces";
 interface SubwayArticleBoxProps {
   brand: string;
 }
 const ArticleBox: React.FC<SubwayArticleBoxProps> = ({ brand }) => {
-  const [articles, setArticles] = useState<articlesInterface[]>([]);
+  const [articles, setArticles] = useState<ArticleInterface[]>([]);
   const dynamicPath = `/${brand}/`;
 
   const fetchArticles = () => {
-    api.get(`/articles/${brand}/brands`)
-      .then(
-        response => setArticles(response.data.data.articles)
-      )
-      .catch(err => {
-        console.log(err)
-      })
+    api
+      .get(`/articles/${brand}/brands`)
+      .then((response) => setArticles(response.data.data.articles))
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
 
   useEffect(() => {
     fetchArticles();
   }, []);
 
-
-
   return (
     <>
       <SearchBox brand={brand} setArticles={setArticles} />
       <div className="flex flex-wrap -m-4">
-        {articles.map(article =>
+        {articles.map((article) => (
           <div key={article.id} className="xl:w-1/3 md:w-1/2 p-4">
             <div className="border border-gray-200 p-6 rounded-lg">
               <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-green-100 text-green-500 mb-4">
@@ -69,13 +51,12 @@ const ArticleBox: React.FC<SubwayArticleBoxProps> = ({ brand }) => {
               {/* <p className="leading-relaxed text-base">
               {article.author.username}
             </p> */}
-              <p className="leading-relaxed text-base">
-                {article.createdDate}
-              </p>
+              <p className="leading-relaxed text-base">{article.createdDate}</p>
             </div>
-          </div>)}
+          </div>
+        ))}
       </div>
     </>
-  )
-}
+  );
+};
 export default ArticleBox;

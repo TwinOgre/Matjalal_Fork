@@ -16,7 +16,7 @@ public class MemberDTO {
     private LocalDateTime modifiedData;
     private String email;
 
-    public MemberDTO(Member member){
+    public MemberDTO(Member member) {
         this.id = member.getId();
         this.username = member.getUsername();
         this.createdDate = member.getCreatedDate();

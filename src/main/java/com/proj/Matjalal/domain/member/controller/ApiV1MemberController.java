@@ -35,8 +35,8 @@ public class ApiV1MemberController {
     }
 
     @PostMapping("/login")
-    public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody){
-        RsData<MemberService.AuthAndMakeTokensResponseBody> rsData =  this.memberService.authAndMakeToken(loginRequestBody.getUsername(), loginRequestBody.getPassword());
+    public RsData<LoginResponseBody> login(@Valid @RequestBody LoginRequestBody loginRequestBody) {
+        RsData<MemberService.AuthAndMakeTokensResponseBody> rsData = this.memberService.authAndMakeToken(loginRequestBody.getUsername(), loginRequestBody.getPassword());
 
         // 쿠키에 accessToken, refreshToken 넣기
         rq.setCrossDomainCookie("accessToken", rsData.getData().getAccessToken());
@@ -55,7 +55,7 @@ public class ApiV1MemberController {
     }
 
     @GetMapping("/me")
-    public RsData<MeResponse> me(){
+    public RsData<MeResponse> me() {
         Member member = rq.getMember();
 
         return RsData.of(
@@ -66,14 +66,12 @@ public class ApiV1MemberController {
     }
 
     @PostMapping("/logout")
-    public RsData<Void> logout () {
+    public RsData<Void> logout() {
         rq.removeCrossDomainCookie("accessToken");
         rq.removeCrossDomainCookie("refreshToken");
 
         return RsData.of("200", "로그아웃 성공");
     }
-
-
 
 
 }

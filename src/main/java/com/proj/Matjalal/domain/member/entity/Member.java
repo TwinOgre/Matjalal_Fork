@@ -1,8 +1,10 @@
 package com.proj.Matjalal.domain.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.proj.Matjalal.domain.review.entity.Review;
 import com.proj.Matjalal.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +27,11 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
     private String refreshToken;
+
+
+    @OneToMany
+    @JsonIgnore
+    private List<Review> reviews;
 
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
