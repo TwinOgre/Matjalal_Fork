@@ -18,15 +18,12 @@ public class ReviewDTO {
     private LocalDateTime modifiedDate;
     @ManyToOne
     private Member author;
-    @ManyToOne
-    private Article article;
 
 
     public ReviewDTO(Review review) {
         this.id = review.getId();
         this.content = review.getContent();
         this.author = review.getAuthor();
-        this.article = review.getArticle();
         this.createdDate = review.getCreatedDate();
         this.modifiedDate = review.getModifiedDate();
     }

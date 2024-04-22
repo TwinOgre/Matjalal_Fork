@@ -24,6 +24,7 @@ public class Ingredient extends BaseEntity {
     private String type;
 
     @ManyToMany(mappedBy = "ingredients")
+    @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 }
 

@@ -1,9 +1,14 @@
-import { useState } from 'react';
-import api from '../utils/api';
-export default function SearchBox({ brand, setArticles }) {
-    const [keyword, setKeyword] = useState('');
+import { ChangeEvent, useState } from "react";
+import api from "../utils/api";
+interface SearchBoxProps {
+    brand: string;
+    setArticles: ([]) => void;
+}
 
-    const changeSearchWordHandler = (event) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ brand, setArticles }) => {
+    const [keyword, setKeyword] = useState("");
+
+    const changeSearchWordHandler = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
 
         setKeyword(event.target.value);
@@ -34,4 +39,6 @@ export default function SearchBox({ brand, setArticles }) {
             </div>
         </>
     );
-}
+};
+
+export default SearchBox;

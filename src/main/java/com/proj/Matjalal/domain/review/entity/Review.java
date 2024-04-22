@@ -24,5 +24,6 @@ public class Review extends BaseEntity {
     private Member author;
 
     @ManyToOne
+    @JsonIgnore
     private Article article;
 }

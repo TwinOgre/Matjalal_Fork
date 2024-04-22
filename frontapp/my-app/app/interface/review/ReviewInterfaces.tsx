@@ -1,6 +1,6 @@
 import { MemberInterface } from "../member/MemberInterfaces";
 export interface ReviewInterface {
-  id: string;
+  id: number;
   content: string;
   createdDate: string;
   modifiedDate: string;

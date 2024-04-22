@@ -42,10 +42,11 @@ public class ArticleService {
     }
 
     @Transactional
-    public RsData<Article> update(Article article, String subject, String content) {
+    public RsData<Article> update(Article article, String subject, String content, List<Ingredient> ingredients) {
         Article updatedArticle = article.toBuilder()
                 .subject(subject)
                 .content(content)
+                .ingredients(ingredients)
                 .build();
         this.articleRepository.save(updatedArticle);
         return RsData.of("S-4", "%d 번 게시글이 수정되었습니다.".formatted(updatedArticle.getId()), updatedArticle);
