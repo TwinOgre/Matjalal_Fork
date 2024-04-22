@@ -74,4 +74,8 @@ public class ReviewService {
         }
         return RsData.of("S-5", "%d 번 게시물이 삭제되었습니다.".formatted(optionalReview.get().getId()), null);
     }
+
+    public List<Review> findAllByArticleId(Long articleId) {
+        return this.reviewRepository.findAllByArticleId(articleId);
+    }
 }

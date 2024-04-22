@@ -4,7 +4,7 @@ import api from "../utils/api";
 import { useState, useEffect } from "react";
 import IngredientCheckBox from "./IngredientCheckBox";
 import { useRouter } from "next/navigation";
-import { MemberInterface } from "../interface/user/MemberInterfaces";
+import { MemberInterface } from "../interface/member/MemberInterfaces";
 import { IngredientInterface } from "../interface/ingredient/IngredientInterfaces";
 export default function SubwayArticleForm() {
   const router = useRouter();

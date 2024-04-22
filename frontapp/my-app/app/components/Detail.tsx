@@ -1,12 +1,15 @@
-'use client';
-import { useParams } from 'next/navigation';
-import { useState, useEffect, FC } from 'react';
-import api from '@/app/utils/api';
-import IngredientTypeBox from './IngredientTypeBox';
-import ReviewBox from './ReviewBox';
-import ReviewForm from './ReviewForm';
-import { ArticleInterface } from '../interface/article/ArticleInterfaces';
-import { ReviewInterface } from '../interface/review/ReviewInterfaces';
+"use client";
+import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect, FC } from "react";
+import api from "@/app/utils/api";
+import IngredientTypeBox from "./IngredientTypeBox";
+import ReviewBox from "./ReviewBox";
+import ReviewForm from "./ReviewForm";
+import { ArticleInterface } from "../interface/article/ArticleInterfaces";
+import { ReviewInterface } from "../interface/review/ReviewInterfaces";
+import Link from "next/link";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MemberInterface } from "../interface/member/MemberInterfaces";
 
 interface DetailProps {
     color: string;
@@ -14,39 +17,53 @@ interface DetailProps {
 }
 
 const Detail: React.FC<DetailProps> = ({ color, types }) => {
+    const router = useRouter();
     const [article, setArticle] = useState<ArticleInterface>({
         id: 0,
-        createdDate: '',
-        modifiedDate: '',
-        subject: '',
-        content: '',
-        brand: '',
+        createdDate: "",
+        modifiedDate: "",
+        subject: "",
+        content: "",
+        brand: "",
         author: {
-            id: '',
-            createdDate: '',
-            modifiedDate: '',
-            username: '',
-            email: '',
+            id: "",
+            createdDate: "",
+            modifiedDate: "",
+            username: "",
+            email: "",
         },
         ingredients: [],
     });
     const params = useParams();
     const [reviews, setReviews] = useState<ReviewInterface[]>([]);
+    const [member, setMember] = useState<MemberInterface>();
+
+    useEffect(() => {
+        api.get("/members/me")
+            .then((response) => setMember(response.data.data.memberDTO))
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const fetchArticle = () => {
-        api.get(`/articles/${params.id}`)
+        api
+            .get(`/articles/${params.id}`)
             .then((response) => setArticle(response.data.data.articleDTO))
             .catch((err) => {
                 console.log(err);
-            });
+            }),
+            [];
     };
 
     const fetchReviews = () => {
-        api.get(`/reviews`)
+        api
+            .get(`/reviews/${params.id}/articles`)
             .then((response) => setReviews(response.data.data.reviews))
             .catch((err) => {
                 console.log(err);
-            });
+            }),
+            [];
     };
 
     useEffect(() => {
@@ -58,10 +75,22 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
     const formatDate = (dateString: string): string => {
         const date = new Date(dateString);
         const year = date.getFullYear().toString().slice(-2);
-        const month = ('0' + (date.getMonth() + 1)).slice(-2);
-        const day = ('0' + date.getDate()).slice(-2);
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
         return `${year}-${month}-${day}`;
     };
+    const deleteArticle = async (id: number) => {
+        await api.delete(`/articles/${id}`);
+        router.push(`/${article.brand}/articles`);
+    };
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: deleteArticle,
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ["articleDTO"] });
+        },
+    });
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-24 mx-auto">
@@ -77,9 +106,9 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
                                 📆 {formatDate(article.createdDate)}
                             </a>
                             {/* 멤버 추가시 주석 해제 */}
-                            {/* <a className="flex-grow border-b-2 border-green-500  py-2 text-lg px-1">
+                            <a className="flex-grow border-b-2 border-green-500  py-2 text-lg px-1">
                                 👩‍🍳 {article.author.username}
-                            </a> */}
+                            </a>
                         </div>
                         <p className="leading-relaxed mb-4">{article.content}</p>
                         {/* 반복시키기 */}
@@ -90,25 +119,23 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
                         ))}
                         <div className="flex mt-2">
                             <span className="title-font font-medium text-2xl text-gray-900">✅</span>
-                            <button
-                                className={`flex ml-auto text-white bg-${color}-500 border-0 py-2 px-6 focus:outline-none hover:bg-${color}-600 rounded`}
-                            >
-                                Button
-                            </button>
-                            <button
-                                className={`rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-${color}-500 ml-4`}
-                            >
-                                <svg
-                                    fill="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    className="w-5 h-5"
-                                    viewBox="0 0 24 24"
+                            {member?.id === article.author.id && (
+                                <button
+                                    className={`flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded`}
                                 >
-                                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                </svg>
-                            </button>
+                                    <Link href={`/${article.brand}/${article.id}/patch`}>수정하기</Link>
+                                </button>
+                            )}
+                        </div>
+                        <div className="mt-2">
+                            {member?.id === article.author.id && (
+                                <button
+                                    className={`flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded`}
+                                    onClick={() => mutation.mutate(article.id)}
+                                >
+                                    삭제하기
+                                </button>
+                            )}
                         </div>
                     </div>
                     {/* 추후 이미지 추가 시 주석 */}
@@ -120,7 +147,7 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
                 </div>
                 {reviews.map((review) => (
                     <div key={review.id} className="lg:w-4/5 w-full mx-auto border border-gray-300 mt-15 mb-10">
-                        <ReviewBox review={review} formatDate={formatDate} />
+                        <ReviewBox review={review} formatDate={formatDate} fetchReviews={fetchReviews} />
                     </div>
                 ))}
                 {/* 비로그인 시 안보이게 만들기 */}
