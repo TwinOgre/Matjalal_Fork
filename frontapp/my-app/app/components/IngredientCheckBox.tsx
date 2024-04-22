@@ -1,29 +1,32 @@
-'use client'
-import { useState, useEffect } from "react";
-import api from "../utils/api";
+'use client';
+import { useState, useEffect } from 'react';
+import api from '../utils/api';
 interface ingredientsInterface {
-    id: string,
-    name: string,
-    type: string
+    id: string;
+    name: string;
+    type: string;
 }
 interface IngredientCheckBoxProps {
     onIngredientChange: (ingredients: ingredientsInterface[]) => void;
-    onIngredientRemove:(removedIngredient: ingredientsInterface) => void;
-    ingredientType: string
+    onIngredientRemove: (removedIngredient: ingredientsInterface) => void;
+    ingredientType: string;
     maxChecked: number;
 }
-const IngredientCheckBox: React.FC<IngredientCheckBoxProps> = ({ onIngredientChange, onIngredientRemove , ingredientType, maxChecked }) => {
-
-    // 불러올 재료 
+const IngredientCheckBox: React.FC<IngredientCheckBoxProps> = ({
+    onIngredientChange,
+    onIngredientRemove,
+    ingredientType,
+    maxChecked,
+}) => {
+    // 불러올 재료
     const [ingredients, setIngredients] = useState<ingredientsInterface[]>([]);
     useEffect(() => {
         api.get(`/ingredients/type/${ingredientType}`)
-            .then(response => setIngredients(response.data.data.ingredients))
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
-
+            .then((response) => setIngredients(response.data.data.ingredients))
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const [checkedCount, setCheckedCount] = useState<number>(0); // 체크된 재료의 수
     // 체크된 재료
@@ -43,22 +46,21 @@ const IngredientCheckBox: React.FC<IngredientCheckBoxProps> = ({ onIngredientCha
         // 체크된 재료의 수 갱신
         setCheckedCount(currentCheckedCount);
 
-
-
         const updatedIngredients = isChecked
             ? [...checkedIngredients, ingredient]
-            : checkedIngredients.filter(item => ingredient !== ingredient);
+            : checkedIngredients.filter((item) => ingredient !== ingredient);
 
         if (isChecked) {
             // 체크된 경우, 해당 재료를 추가합니다.
-            setCheckedIngredients(prevCheckedIngredients => [...prevCheckedIngredients, ingredient]);
+            setCheckedIngredients((prevCheckedIngredients) => [...prevCheckedIngredients, ingredient]);
         } else {
             // 체크가 해제된 경우, 해당 재료를 제거합니다.
-            setCheckedIngredients(prevCheckedIngredients => prevCheckedIngredients.filter(item => item !== ingredient));
-            onIngredientRemove(ingredient)
+            setCheckedIngredients((prevCheckedIngredients) =>
+                prevCheckedIngredients.filter((item) => item !== ingredient)
+            );
+            onIngredientRemove(ingredient);
         }
-        
-    }
+    };
     useEffect(() => {
         onIngredientChange(checkedIngredients);
         console.log(checkedIngredients);
@@ -69,12 +71,19 @@ const IngredientCheckBox: React.FC<IngredientCheckBoxProps> = ({ onIngredientCha
             <label className="text-lg font-bold">{ingredientType}</label>
             <br />
             <label className="text-sm font-bold">최대 {maxChecked}개!</label>
-            {ingredients.map(ingredient =>
+            {ingredients.map((ingredient) => (
                 <div key={ingredient.id.toString()}>
-                    <input type="checkbox" id={ingredient.name} name={ingredient.name} onChange={(e) => handleIngredientChange(e, ingredient)} className="w-4 h-4 mr-1" />
+                    <input
+                        type="checkbox"
+                        id={ingredient.name}
+                        name={ingredient.name}
+                        onChange={(e) => handleIngredientChange(e, ingredient)}
+                        className="w-4 h-4 mr-1"
+                    />
                     <label htmlFor={ingredient.name}>{ingredient.name}</label>
-                </div>)}
+                </div>
+            ))}
         </div>
-    )
-}
+    );
+};
 export default IngredientCheckBox;

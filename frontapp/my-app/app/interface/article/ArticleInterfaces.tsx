@@ -1,4 +1,4 @@
-import { MemberInterface } from "../user/MemberInterfaces";
+import { MemberInterface } from "../member/MemberInterfaces";
 import { IngredientInterface } from "../ingredient/IngredientInterfaces";
 export interface ArticleInterface {
   id: number;

@@ -1,4 +1,4 @@
-import { MemberInterface } from "../user/MemberInterfaces";
+import { MemberInterface } from "../member/MemberInterfaces";
 export interface ReviewInterface {
   id: string;
   content: string;
