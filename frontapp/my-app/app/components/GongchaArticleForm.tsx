@@ -1,9 +1,9 @@
-'use client';
-import api from '@/app/utils/api';
+"use client";
+import api from "@/app/utils/api";
 // import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect, ChangeEvent } from 'react';
-import IngredientCheckBox from './IngredientCheckBox';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, ChangeEvent } from "react";
+import IngredientCheckBox from "./IngredientCheckBox";
+import { useRouter } from "next/navigation";
 type memberInterface = {
     createdDate: string;
     modifiedDate: string;
@@ -20,10 +20,10 @@ export default function GongchaArticleForm() {
     const router = useRouter();
     const [member, setMember] = useState<memberInterface>();
     const [selectedIngredients, setSelectedIngredients] = useState<ingredientsInterface[]>([]);
-    const [article, setArticle] = useState({ subject: '', content: '' });
+    const [article, setArticle] = useState({ subject: "", content: "" });
 
     useEffect(() => {
-        api.get('/members/me')
+        api.get("/members/me")
             .then((response) => setMember(response.data.data.memberDTO))
             .catch((err) => {
                 console.log(err);
@@ -53,19 +53,19 @@ export default function GongchaArticleForm() {
         e.preventDefault();
 
         try {
-            await api.post('/articles', {
+            await api.post("/articles", {
                 subject: article.subject,
                 content: article.content,
                 author: member,
                 ingredients: selectedIngredients,
-                brand: 'gongcha',
+                brand: "gongcha",
             });
-            console.log('Gongcha Article created successfully!');
-            router.push('/gongcha/articles');
+            console.log("Gongcha Article created successfully!");
+            router.push("/gongcha/articles");
 
             // 추가적인 로직이 필요한 경우 여기에 작성
         } catch (error) {
-            console.error('An error occurred while creating the Gongcha article:', error);
+            console.error("An error occurred while creating the Gongcha article:", error);
             // 에러 처리 로직을 추가할 수 있습니다. 예를 들어, 사용자에게 오류 메시지를 표시하거나 다시 시도할 수 있도록 유도할 수 있습니다.
         }
     };

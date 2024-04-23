@@ -1,9 +1,9 @@
-'use client';
-import { useEffect, useState } from 'react';
-import api from '../utils/api';
-import Link from 'next/link';
-import SearchBox from './searchBox';
-import { ArticleInterface } from '../interface/article/ArticleInterfaces';
+"use client";
+import { useEffect, useState } from "react";
+import api from "../utils/api";
+import Link from "next/link";
+import SearchBox from "./searchBox";
+import { ArticleInterface } from "../interface/article/ArticleInterfaces";
 interface SubwayArticleBoxProps {
     brand: string;
 }

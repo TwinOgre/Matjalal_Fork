@@ -1,21 +1,18 @@
-'use client'
+"use client";
 import ArticleBox from "@/app/components/ArticleBox";
 import { MemberInterface } from "@/app/interface/user/MemberInterfaces";
 import api from "@/app/utils/api";
-import Link from "next/link"
+import Link from "next/link";
 import { useEffect, useState } from "react";
 export default function GongchaArticles() {
     const [member, setMember] = useState<MemberInterface>();
 
     useEffect(() => {
-        api
-            .get("/members/me")
+        api.get("/members/me")
             .then((response) => setMember(response.data.data.memberDTO))
             .catch((err) => {
-
                 console.log(err);
             });
-
     }, []);
     return (
         <>
@@ -25,11 +22,9 @@ export default function GongchaArticles() {
                         <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
                             🍵 Matjalal GongCha 🧉
                         </h1>
-                        <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">
-                            공차 꿀조합을 찾아봐요
-                        </p>
+                        <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">공차 꿀조합을 찾아봐요</p>
                     </div>
-                    <div className="flex flex-wrap -m-4">
+                    <div>
                         <ArticleBox brand="gongcha" />
                     </div>
                     {member && (

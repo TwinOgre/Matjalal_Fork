@@ -1,20 +1,20 @@
-import type { Metadata } from 'next';
-import { Noto_Sans_KR } from 'next/font/google';
-import './globals.css';
-import './home.css';
-import Footer from './components/Footer';
-import Link from 'next/link';
-import HamburgerMenu from './components/HamburgerMenu';
-import Navbar from './components/navbar';
-import ReactQueryProviders from './utils/ReactQueryProviders';
+import type { Metadata } from "next";
+import { Noto_Sans_KR } from "next/font/google";
+import "./globals.css";
+import "./home.css";
+import Footer from "./components/Footer";
+import Link from "next/link";
+import HamburgerMenu from "./components/HamburgerMenu";
+import Navbar from "./components/navbar";
+import ReactQueryProviders from "./utils/ReactQueryProviders";
 
-const noto_sans = Noto_Sans_KR({ subsets: ['latin'] });
+const noto_sans = Noto_Sans_KR({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: 'Matjalal',
-    description: 'food custom and Recomandation',
+    title: "Matjalal",
+    description: "food custom and Recomandation",
     icons: {
-        icon: '/favicon-16x16.png',
+        icon: "/favicon-16x16.png",
     },
 };
 

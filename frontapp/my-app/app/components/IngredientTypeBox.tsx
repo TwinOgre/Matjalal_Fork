@@ -1,4 +1,4 @@
-import { ArticleInterface } from '../interface/article/ArticleInterfaces';
+import { ArticleInterface } from "../interface/article/ArticleInterfaces";
 interface IngredientTypeBoxProps {
     article: ArticleInterface;
     ingredientType: string;
@@ -11,7 +11,7 @@ const IngredientTypeBox: React.FC<IngredientTypeBoxProps> = ({ article, ingredie
                 (ingredient) =>
                     ingredient.type.includes(ingredientType) && (
                         <span key={ingredient.id} className="ml-auto text-gray-900 ">
-                            <span className="border-l border-gray-200 mx-1"></span> {ingredient.name}{' '}
+                            <span className="border-l border-gray-200 mx-1"></span> {ingredient.name}{" "}
                             <span className="border-r border-gray-200 mx-1"></span>
                         </span>
                     )
