@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function HamburgerMenu() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,12 +19,12 @@ export default function HamburgerMenu() {
             setSidebarOpen(false);
         };
 
-        document.documentElement.addEventListener('click', handleClick);
-        document.body.addEventListener('click', handleClick);
+        document.documentElement.addEventListener("click", handleClick);
+        document.body.addEventListener("click", handleClick);
 
         return () => {
-            document.documentElement.removeEventListener('click', handleClick);
-            document.body.removeEventListener('click', handleClick);
+            document.documentElement.removeEventListener("click", handleClick);
+            document.body.removeEventListener("click", handleClick);
         };
     }, []);
 
@@ -40,9 +40,9 @@ export default function HamburgerMenu() {
             <div
                 ref={sidebarRef}
                 className={`fixed lg:w-64 bg-gray-800 ${
-                    sidebarOpen ? 'left-0' : '-left-64'
+                    sidebarOpen ? "left-0" : "-left-64"
                 } mt-12 transition-all opacity-100 duration-300 ease-in-out`}
-                style={{ height: '100vh' }}
+                style={{ height: "100vh" }}
             >
                 <div className="flex flex-col">
                     <div className="flex justify-center">

@@ -1,4 +1,4 @@
-import GongchaArticleForm from "@/app/components/GongchaArticleForm"
+import GongchaArticleForm from "@/app/components/GongchaArticleForm";
 export default function GongchaCreateForm() {
     return (
         <section className="text-gray-600 body-font">
@@ -14,5 +14,5 @@ export default function GongchaCreateForm() {
                 <GongchaArticleForm />
             </div>
         </section>
-    )
+    );
 }

@@ -5,6 +5,7 @@ import com.proj.Matjalal.domain.member.dto.MemberDTO;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.domain.member.service.MemberService;
 import com.proj.Matjalal.global.RsData.RsData;
+import com.proj.Matjalal.global.exception.GlobalException;
 import com.proj.Matjalal.global.rq.Rq;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -73,7 +76,11 @@ public class ApiV1MemberController {
         return RsData.of("200", "로그아웃 성공");
     }
 
-
+    @GetMapping("/{id}")
+    public RsData<MemberDTO> getUserInfo(@PathVariable(value = "id")Long id){
+        Member member = this.memberService.findById(id).orElseThrow( () -> new GlobalException("400-1", "회원이 존재하지 않습니다."));
+        return RsData.of("200","성공",new MemberDTO(member));
+    }
 }
 
 
