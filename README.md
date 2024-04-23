@@ -23,5 +23,6 @@
 - 서브웨이나 공차같은 커스텀 푸드 브랜드 내의 주문 조합에 대한 정보들이 한곳에 집중되어 있지 않고 분산되어 원하는 정보를 찾는데 불편함이 있습니다. 이러한 정보들을 담고 찾을 수 있는 서비스를 만들게 되었습니다.
 
 ## ERD-Cloud
-![Matjalal_ERD_Cloud](https://velog.velcdn.com/images/twinogre/post/a4e00714-17f8-4ca9-9789-91e5f4bb84b6/image.png)
+![Matjalal_ERD_Cloud](https://github.com/Matjalal/Matjalal/assets/145107336/5c9b61bf-faef-4362-9c94-2795fa4a91ea)
+
 
