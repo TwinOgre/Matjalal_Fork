@@ -1,5 +1,5 @@
 export type MemberInterface = {
-    id: string;
+    id: number;
     createdDate: string;
     modifiedDate: string;
     username: string;

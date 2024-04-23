@@ -1,6 +1,7 @@
 package com.proj.Matjalal.domain.article.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.proj.Matjalal.domain.imageData.entity.ImageData;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.domain.review.entity.Review;

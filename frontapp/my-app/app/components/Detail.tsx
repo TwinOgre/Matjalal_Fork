@@ -8,8 +8,10 @@ import ReviewForm from "./ReviewForm";
 import { ArticleInterface } from "../interface/article/ArticleInterfaces";
 import { ReviewInterface } from "../interface/review/ReviewInterfaces";
 import Link from "next/link";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MemberInterface } from "../interface/member/MemberInterfaces";
+import { ImageDataInterface } from "../interface/imageData/ImageDataInterfaces";
+import Image from "next/image";
 
 interface DetailProps {
     color: string;
@@ -26,7 +28,7 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
         content: "",
         brand: "",
         author: {
-            id: "",
+            id: 0,
             createdDate: "",
             modifiedDate: "",
             username: "",
@@ -37,6 +39,13 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
     const params = useParams();
     const [reviews, setReviews] = useState<ReviewInterface[]>([]);
     const [member, setMember] = useState<MemberInterface>();
+    const fetchImage = async () => {
+        return await api.get(`/image-data/${params.id}/articles`).then((response) => response.data.data.imageData);
+    };
+    const { isLoading, error, data } = useQuery<ImageDataInterface>({
+        queryKey: [`imageData_articleId:${article.id}`],
+        queryFn: fetchImage,
+    });
 
     useEffect(() => {
         api.get("/members/me")
@@ -139,11 +148,13 @@ const Detail: React.FC<DetailProps> = ({ color, types }) => {
                         </div>
                     </div>
                     {/* 추후 이미지 추가 시 주석 */}
-                    <img
+                    {/* <img
                         alt="article"
                         className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-                        src="https://dummyimage.com/400x400"
-                    />
+                        src={`${data?.uploadPath}`}
+                    /> */}
+
+                    <Image src={`/${data?.uploadPath}`} width={400} height={400} alt="article_image" />
                 </div>
                 {reviews.map((review) => (
                     <div key={review.id} className="lg:w-4/5 w-full mx-auto border border-gray-300 mt-15 mb-10">

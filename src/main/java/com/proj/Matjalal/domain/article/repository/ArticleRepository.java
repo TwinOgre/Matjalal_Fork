@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findAllByBrand(String brand);
@@ -16,4 +17,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query(value = "SELECT * FROM article WHERE brand = :brand AND content LIKE CONCAT('%', :keyword, '%')", nativeQuery = true)
     List<Article> findByBrandAndKeyword(@Param("brand") String brand,@Param("keyword") String keyword);
+
+    Optional<Article> getArticleBySubjectAndContent(String articleName, String articleContent);
 }
