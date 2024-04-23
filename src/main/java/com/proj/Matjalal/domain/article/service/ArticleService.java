@@ -2,6 +2,7 @@ package com.proj.Matjalal.domain.article.service;
 
 import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.repository.ArticleRepository;
+import com.proj.Matjalal.domain.imageData.entity.ImageData;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.global.RsData.RsData;
@@ -56,6 +57,17 @@ public class ArticleService {
         List<Article> articles = this.articleRepository.findAllByBrand(brand);
 
         return articles;
+    }
+
+    public Optional<Article> getArticleBySubjectAndContent(String subject, String content) {
+        return this.articleRepository.getArticleBySubjectAndContent(subject, content);
+    }
+
+    public void addImageData(Article article, ImageData imageData) {
+        Article article1 = article.toBuilder()
+//                .imageData(imageData)
+                .build();
+        this.articleRepository.save(article1);
     }
 
     @Getter

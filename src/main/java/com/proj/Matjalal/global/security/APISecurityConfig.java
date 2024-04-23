@@ -40,6 +40,10 @@ public class APISecurityConfig {
                                 .requestMatchers("/api/*/reviews/*").permitAll()
                                 .requestMatchers("/api/*/reviews/*/articles").permitAll()
                                 .requestMatchers("/api/*/members/*").permitAll()
+                                .requestMatchers("/api/*/image-data/").permitAll()
+                                .requestMatchers("/api/*/image-data/*").permitAll()
+                                .requestMatchers("/api/*/image-data/articles").permitAll()
+                                .requestMatchers("/api/*/image-data/*/articles").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .csrf(

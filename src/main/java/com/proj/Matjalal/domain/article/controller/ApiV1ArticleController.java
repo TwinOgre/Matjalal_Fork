@@ -5,26 +5,31 @@ import com.proj.Matjalal.domain.article.entity.Article;
 import com.proj.Matjalal.domain.article.service.ArticleService;
 import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.member.entity.Member;
+import com.proj.Matjalal.domain.member.service.MemberService;
 import com.proj.Matjalal.domain.review.entity.Review;
 import com.proj.Matjalal.domain.review.service.ReviewService;
 import com.proj.Matjalal.global.RsData.RsData;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +38,7 @@ import java.util.Optional;
 public class ApiV1ArticleController {
     private final ArticleService articleService;
     private final ReviewService reviewService;
+    private final MemberService memberService;
 
 
     //다건 조회 DTO
@@ -133,8 +139,8 @@ public class ApiV1ArticleController {
     @PostMapping("")
     @Operation(summary = "게시글 등록", description = "게시글 등록: 제목, 내용, 재료리스트, 회원, 브랜드 필요. ")
     public RsData<CreateResponse> createArticle(@RequestBody CreateRequest createRequest) {
-        RsData<Article> createRs = this.articleService.create(createRequest.author, createRequest.getSubject(),
-                createRequest.getContent(), createRequest.getIngredients(), createRequest.getBrand());
+        RsData<Article> createRs = this.articleService.create(createRequest.getAuthor(), createRequest.getSubject(),
+                createRequest.content, createRequest.getIngredients(), createRequest.brand);
         if (createRs.isFail()) {
             return (RsData) createRs;
         }
