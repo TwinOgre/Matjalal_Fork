@@ -1,12 +1,11 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import api from "../utils/api";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+'use client'
 
-export default function LoginForm() {
-    const [member, setMember] = useState({ username: "", password: "" });
-    const queryClient = useQueryClient();
+import { useState } from "react";
+import api from "@/app/utils/api";
+import { useRouter } from "next/navigation";
+
+export default function Join() {
+    const [member, setMember] = useState({ username: "", email: "", password: "" });
     const router = useRouter();
 
     const handleChange = (e: any) => {
@@ -21,13 +20,22 @@ export default function LoginForm() {
         e.preventDefault();
 
         return await api
-            .post("/members/login", {
+            .post("/members/join", {
                 username: member.username,
+                email: member.email,
                 password: member.password,
             })
             .then((res) => {
-                queryClient.setQueryData(["memberKey"], res.data.data.memberDto);
-                router.replace("/");
+                console.log(res)
+                if(res.data.resultCode==="F-1"){
+                    alert(res.data.msg);
+                } else if(res.data.resultCode==="F-2"){
+                    alert(res.data.msg);
+                }else{
+                    alert(res.data.msg);
+                    router.replace("/member/login");
+                }
+                
             })
             .catch((error) => {
                 console.log(error);
@@ -38,7 +46,7 @@ export default function LoginForm() {
         <>
             <section className="flex justify-center m-40">
                 <div className="grid grid-rows-2 grid-flow-col gap-1 items-center">
-                    <div className="grid gap-2">
+                    <div className="grid gap-1">
                         <div>
                             <span>아이디</span>
                             <input
@@ -47,6 +55,16 @@ export default function LoginForm() {
                                 onChange={handleChange}
                                 className="flex mt-1 border rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="ID를 입력하세요"
+                            />
+                        </div>
+                        <div>
+                            <span>이메일</span>
+                            <input
+                                type="email"
+                                name="email"
+                                onChange={handleChange}
+                                className="flex mt-1 border rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Email을 입력하세요"
                             />
                         </div>
                         <div>
@@ -59,22 +77,15 @@ export default function LoginForm() {
                                 placeholder="PASSWORD를 입력하세요"
                             />
                         </div>
-                    </div>
-                    <div className="grid gap-2">
-                        <button
-                            onClick={login}
-                            className="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white text-sm font-semibold rounded-md shadow"
-                            type="button"
-                        >
-                            로그인
-                        </button>
-                        <Link
-                            className="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white text-sm font-semibold rounded-md shadow"
-                            type="button"
-                            href="/member/join"
-                        >
-                            <div className="flex justify-center">회원가입</div>
-                        </Link>
+                        <div>
+                            <button
+                                className="w-full py-2 px-3 mt-5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white text-sm font-semibold rounded-md shadow"
+                                type="button"
+                                onClick={login}
+                            >
+                                회원가입
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>

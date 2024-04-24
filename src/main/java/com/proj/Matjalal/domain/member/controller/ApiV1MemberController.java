@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,23 @@ import java.util.Optional;
 public class ApiV1MemberController {
     private final MemberService memberService;
     private final Rq rq;
+
+    @Data
+    public static class JoinRequestBody {
+        @NotBlank
+        private String username;
+        @NotBlank
+        private String password;
+        @NotBlank
+        private String email;
+    }
+
+    @PostMapping("/join")
+    public RsData<Member> join(@Valid @RequestBody JoinRequestBody joinRequestBody) {
+        RsData<Member> rsData = this.memberService.join(joinRequestBody.username,
+                joinRequestBody.password, joinRequestBody.email);
+        return RsData.of(rsData.getResultCode(), rsData.getMsg(), rsData.getData());
+    }
 
     @Getter
     public static class LoginRequestBody {
@@ -83,9 +101,9 @@ public class ApiV1MemberController {
     }
 
     @GetMapping("/{id}")
-    public RsData<MemberDTO> getUserInfo(@PathVariable(value = "id")Long id){
-        Member member = this.memberService.findById(id).orElseThrow( () -> new GlobalException("400-1", "회원이 존재하지 않습니다."));
-        return RsData.of("200","성공",new MemberDTO(member));
+    public RsData<MemberDTO> getUserInfo(@PathVariable(value = "id") Long id) {
+        Member member = this.memberService.findById(id).orElseThrow(() -> new GlobalException("400-1", "회원이 존재하지 않습니다."));
+        return RsData.of("200", "성공", new MemberDTO(member));
     }
 }
 

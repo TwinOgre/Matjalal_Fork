@@ -22,11 +22,20 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
-    public Member join(String username, String password, String email) {
+
+    @Transactional
+    public RsData<Member> join(String username, String password, String email) {
+
+        if (this.memberRepository.findByUsername(username).isPresent()) {
+            return RsData.of("F-1", "존재하는 아이디입니다.", null);
+        }
+        if (this.memberRepository.findByEmail(email).isPresent()) {
+            return RsData.of("F-2", "존재하는 이메일 입니다.", null);
+        }
 
         Member member = Member.builder()
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .email(email)
                 .build();
         String refreshToken = jwtProvider.genRefreshToken(member);
@@ -34,10 +43,10 @@ public class MemberService {
 
         memberRepository.save(member);
 
-        return member;
+        return RsData.of("200", "회원가입 성공", member);
     }
 
-    public Optional<Member> findById (Long id) {
+    public Optional<Member> findById(Long id) {
         return this.memberRepository.findById(id);
     }
 
@@ -51,14 +60,14 @@ public class MemberService {
 
     @Transactional
     public RsData<AuthAndMakeTokensResponseBody> authAndMakeToken(String username, String password) {
-        Member member = this.memberRepository.findByUsername(username).orElseThrow( () -> new GlobalException("400-1", "회원이 존재하지 않습니다."));
+        Member member = this.memberRepository.findByUsername(username).orElseThrow(() -> new GlobalException("400-1", "회원이 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw  new GlobalException("400-2", "비밀번호가 일치 하지 않습니다.");
+            throw new GlobalException("400-2", "비밀번호가 일치 하지 않습니다.");
         }
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id",member.getId());
-        claims.put("username",member.getUsername());
+        claims.put("id", member.getId());
+        claims.put("username", member.getUsername());
 
         String accessToken = jwtProvider.genAccessToken(member);
         String refreshToken = jwtProvider.genRefreshToken(member);
@@ -84,6 +93,7 @@ public class MemberService {
                 authorities
         );
     }
+
     public boolean validateToken(String token) {
         return jwtProvider.verify(token);
     }

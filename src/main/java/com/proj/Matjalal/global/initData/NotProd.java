@@ -22,16 +22,16 @@ public class NotProd {
         String password = passwordEncoder.encode("1234");
         return args -> {
             // 회원 3명 추가
-            Member user1 = memberService.join("user1", password, "test@test.com");
-            Member user2 = memberService.join("user2", password, "test@test.com");
-            Member admin = memberService.join("admin", password, "admin@test.com");
+            RsData<Member> rsData1 = memberService.join("user1", password, "test@test.com");
+            RsData<Member> rsData2 = memberService.join("user2", password, "test2@test2.com");
+            RsData<Member> rsDataAdmin = memberService.join("admin", password, "admin@test.com");
 
             // 작성자 회원 추가
-            RsData<Article> articleRsData = articleService.create(user1, "맛있는 샌드위치", "샌드위치 맛있어요", null, "subway");
-            articleService.create(user1, "피클만 넣은 샌드위치", "피클 좋아", null, "subway");
-            articleService.create(user2, "버블3배 밀크티", "버블 좋아", null, "gongcha");
-            articleService.create(user2, "치즈폼 타로밀크티", "타로 맜있어", null, "gongcha");
-            articleService.create(admin, "공차슈페너에 버블 추가", "맛있어용b", null, "gongcha");
+            RsData<Article> articleRsData = articleService.create(rsData1.getData(), "맛있는 샌드위치", "샌드위치 맛있어요", null, "subway");
+            articleService.create(rsData1.getData(), "피클만 넣은 샌드위치", "피클 좋아", null, "subway");
+            articleService.create(rsData2.getData(), "버블3배 밀크티", "버블 좋아", null, "gongcha");
+            articleService.create(rsData2.getData(), "치즈폼 타로밀크티", "타로 맜있어", null, "gongcha");
+            articleService.create(rsDataAdmin.getData(), "공차슈페너에 버블 추가", "맛있어용b", null, "gongcha");
 
             //재료 생성
             // Subway
@@ -201,7 +201,7 @@ public class NotProd {
             ingredientService.create("(HOT)바닐라 카페라떼", typeName);
 
             //리뷰
-            reviewService.create(user1, articleRsData.getData(), "리뷰1");
+            reviewService.create(rsData1.getData(), articleRsData.getData(), "리뷰1");
 
         };
     }
