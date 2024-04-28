@@ -19,7 +19,7 @@ public class NotProd {
     @Bean
     CommandLineRunner initData(ArticleService articleService, MemberService memberService, IngredientService ingredientService, ReviewService reviewService, PasswordEncoder
             passwordEncoder) {
-        String password = passwordEncoder.encode("1234");
+        String password = "1234";
         return args -> {
             // 회원 3명 추가
             RsData<Member> rsData1 = memberService.join("user1", password, "test@test.com");

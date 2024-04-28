@@ -6,10 +6,7 @@ import com.proj.Matjalal.domain.ingredient.entity.Ingredient;
 import com.proj.Matjalal.domain.member.entity.Member;
 import com.proj.Matjalal.domain.review.entity.Review;
 import com.proj.Matjalal.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,5 +32,8 @@ public class Article extends BaseEntity {
     @JsonIgnore
     private List<Review> reviews;
 
-
+// 다수의 첨부 파일을 가질 수 있음
+    @JsonIgnore
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ImageData imageData;
 }

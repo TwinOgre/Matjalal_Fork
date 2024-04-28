@@ -27,7 +27,8 @@ public class ImageData extends BaseEntity{
     private String uploadPath;
 
     @JsonIgnore
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name = "article_id")
     private Article article;
 //
 //    @JsonIgnore
