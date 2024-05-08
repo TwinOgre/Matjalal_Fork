@@ -12,7 +12,7 @@ export default function HamburgerMenu() {
     };
 
     useEffect(() => {
-        const handleClick = (event) => {
+        const handleClick = (event: React.MouseEvent) => {
             if (sidebarRef.current && sidebarRef.current.contains(event.target)) {
                 return;
             }
